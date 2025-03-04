@@ -3,10 +3,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="SwaggerUI" />
-    <title>SwaggerUI</title>
+    <meta name="description" content="SwaggerUI swapi" />
+    <title>OAS swapi</title>
     <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui.css" />
   </head>
+  <style> .swagger-ui .scheme-container, .swagger-ui .topbar { display: none !important; } </style>
   <body>
   <div id="swagger-ui"></div>
   <script src="https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui-bundle.js" crossorigin></script>
@@ -14,7 +15,7 @@
   <script>
     window.onload = () => {
       window.ui = SwaggerUIBundle({
-        url: 'oas-swapi.yml',
+        url: 'https://raw.githubusercontent.com/kamilkodzi/oas-swapi/refs/heads/main/oas-swapi.yml',
         dom_id: '#swagger-ui',
         presets: [
           SwaggerUIBundle.presets.apis,

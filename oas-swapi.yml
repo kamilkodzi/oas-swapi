@@ -2,6 +2,8 @@ openapi: 3.1.1
 info:
   title: Star Wars data
   description: |
+    # Source files
+    [yaml + index.html](https://github.com/kamilkodzi/oas-swapi) - swagger UI with plain html  <br>
     # Open Api Specification (OAS)
     [stoplightio/prism](https://github.com/stoplightio/prism) - mock server directly from oas file<br>
     [json -> yaml](https://dadroit.com/json-to-yaml/) - convert json to yaml for fun<br>
@@ -140,7 +142,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Starship'
+                $ref: '#/components/schemas/Spaceship'
         '404':
           $ref: '#/components/responses/NotFound'
   /vehicles:
@@ -273,7 +275,7 @@ paths:
                   results:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Films'
+                      $ref: '#/components/schemas/Film'
   /films/{id}:
     get:
       summary: Details about specific film
