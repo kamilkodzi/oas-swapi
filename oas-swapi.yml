@@ -1,0 +1,790 @@
+openapi: 3.1.1
+info:
+  title: Star Wars data
+  description: |
+    # Open Api Specification (OAS)
+    [stoplightio/prism](https://github.com/stoplightio/prism) - mock server directly from oas file<br>
+    [json -> yaml](https://dadroit.com/json-to-yaml/) - convert json to yaml for fun<br>
+    [openapi-map](https://openapi-map.apihandyman.io/) - graphic representation of the properties<br>
+    [swagger-editor](https://editor-next.swagger.io/) -  official editor for OAS files `was used to generate this site`
+    # Star wars data
+    [swapi.dev](https://swapi.dev/) - thank you for awesome api <br>
+  termsOfService: https://opensource.org/license/mit
+  x-custom-info:
+    comment: Star Wars is awesome any you can use custom info in your development
+    developers:
+      - name: kamilkodzi
+        email: bizkamiladamski@gmail.com
+  contact:
+    name: kamilkodzi
+    url: https://github.com/kamilkodzi
+    email: bizkamiladamski@gmail.com
+  license:
+    name: MIT Licence
+    url: https://opensource.org/license/mit
+  version: 1.0.0
+externalDocs:
+  description: External SWAPI Documentation
+  url: https://swapi.dev/documentation
+servers:
+  - url: https://swapi.dev/api
+    description: swapi.dev
+tags:
+  - name: Planets
+    description: Get to know the planets that appeared in the movies.
+  - name: Starships
+    description: Get to know the starships that appeared in the movies.
+  - name: Vehicles
+    description: Get to know the vehicles that appeared in the movies.
+  - name: People
+    description: Get to know the characters that appeared in the movies.
+  - name: Films
+    description: Get to know the films in the Star Wars universe.
+  - name: Species
+    description: Get to know the various species that appeared in the movies.
+paths:
+  /planets:
+    get:
+      tags:
+        - Planets
+      summary: List all planets
+      description: Returns the list of planets supported by swapi
+      parameters:
+        - $ref: '#/components/parameters/pageParam'
+      responses:
+        '200':
+          description: A list of planets
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 60
+                  next:
+                    type: string
+                    nullable: true
+                    example: 'https://swapi.dev/api/planets/?page=2'
+                  previous:
+                    type: string
+                    nullable: true
+                    example: null
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Planet'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /planets/{id}:
+    get:
+      tags:
+        - Planets
+      summary: Details about specific planet
+      description: Returns details about planet with specified id
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: Planet details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Planet'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /starships:
+    get:
+      tags:
+        - Starships
+      summary: List all starships
+      description: Returns the list of starships supported by swapi
+      parameters:
+        - $ref: '#/components/parameters/pageParam'
+      responses:
+        '200':
+          description: A list of starships
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 60
+                  next:
+                    type: string
+                    nullable: true
+                    example: 'https://swapi.dev/api/starships/?page=2'
+                  previous:
+                    type: string
+                    nullable: true
+                    example: null
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Spaceship'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /starships/{id}:
+    get:
+      tags:
+        - Starships
+      summary: Details about specific starships
+      description: Returns details about starships with specified id
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: starships details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Starship'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /vehicles:
+    get:
+      summary: List all vehicles
+      description: Returns the list of vehicles supported by swapi
+      tags:
+        - Vehicles
+      parameters:
+        - $ref: '#/components/parameters/pageParam'
+      responses:
+        '200':
+          description: A list of vehicles
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 10
+                  next:
+                    type: string
+                    nullable: true
+                    example: 'https://swapi.dev/api/vehicles/?page=2'
+                  previous:
+                    type: string
+                    nullable: true
+                    example: null
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Vehicle'
+  /vehicles/{id}:
+    get:
+      summary: Details about specific vehicle
+      description: Returns details about vehicle with specified id
+      tags:
+        - Vehicles
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A single vehicle
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicle'
+  /people:
+    get:
+      summary: List all people
+      description: Returns the list of people supported by swapi
+      tags:
+        - People
+      parameters:
+        - $ref: '#/components/parameters/pageParam'
+      responses:
+        '200':
+          description: A list of people
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 10
+                  next:
+                    type: string
+                    nullable: true
+                    example: 'https://swapi.dev/api/people/?page=2'
+                  previous:
+                    type: string
+                    nullable: true
+                    example: null
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Person'
+  /people/{id}:
+    get:
+      summary: Details about specific person
+      description: Returns details about person with specified id
+      tags:
+        - People
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A single person
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+  /films:
+    get:
+      summary: List all films
+      description: Returns the list of films supported by swapi
+      tags:
+        - Films
+      parameters:
+        - $ref: '#/components/parameters/pageParam'
+      responses:
+        '200':
+          description: A list of people
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 10
+                  next:
+                    type: string
+                    nullable: true
+                    example: 'https://swapi.dev/api/people/?page=2'
+                  previous:
+                    type: string
+                    nullable: true
+                    example: null
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Films'
+  /films/{id}:
+    get:
+      summary: Details about specific film
+      description: Returns details about film with specified id
+      tags:
+        - Films
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A single film
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Film'
+  /species:
+    get:
+      summary: List all species
+      description: Returns the list of species supported by swapi
+      tags:
+        - Species
+      parameters:
+        - $ref: '#/components/parameters/pageParam'
+      responses:
+        '200':
+          description: A list of species
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 60
+                  next:
+                    type: string
+                    nullable: true
+                    example: null
+                  previous:
+                    type: string
+                    nullable: true
+                    example: null
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Species'
+  /species/{id}:
+    get:
+      summary: Details about specific species
+      description: Returns details about species with specified id
+      tags:
+        - Species
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A single species
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Species'
+components:
+  parameters:
+    pageParam:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: The ID of the resource
+  responses:
+    NotFound:
+      description: |
+        When page is above limit, api will throw 404
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              detail:
+                type: string
+                example: Not found
+  schemas:
+    Planet:
+      type: object
+      properties:
+        name:
+          type: string
+          example: 'Tatooine'
+        rotation_period:
+          type: string
+          example: '23'
+        orbital_period:
+          type: string
+          example: '304'
+        diameter:
+          type: string
+          example: '10465'
+        climate:
+          type: string
+          example: 'Arid'
+        gravity:
+          type: string
+          example: '1 standard'
+        terrain:
+          type: string
+          example: 'Desert'
+        surface_water:
+          type: string
+          example: '1'
+        population:
+          type: string
+          example: '200000'
+        residents:
+          type: array
+          items:
+            type: string
+            format: uri
+          example:
+            - https://swapi.dev/api/people/1/
+            - https://swapi.dev/api/people/2/
+            - https://swapi.dev/api/people/4/
+            - https://swapi.dev/api/people/6/
+            - https://swapi.dev/api/people/7/
+            - https://swapi.dev/api/people/8/
+            - https://swapi.dev/api/people/9/
+            - https://swapi.dev/api/people/10/
+            - https://swapi.dev/api/people/15/
+            - https://swapi.dev/api/people/43/
+            - https://swapi.dev/api/people/62/
+        films:
+          type: array
+          items:
+            type: string
+            format: uri
+          examples:
+            - https://swapi.dev/api/films/5/
+            - https://swapi.dev/api/films/1/
+            - https://swapi.dev/api/films/7/
+        created:
+          type: string
+          format: date-time
+          example: '2014-12-09T13:50:48.611000Z'
+        edited:
+          type: string
+          format: date-time
+          example: '2014-12-09T13:50:48.611000Z'
+        url:
+          type: string
+          format: uri
+          example: 'https://swapi.dev/api/planets/1/'
+    Spaceship:
+      type: object
+      properties:
+        name:
+          type: string
+          example: 'X-wing'
+        model:
+          type: string
+          example: 'T-65 X-wing'
+        manufacturer:
+          type: string
+          example: 'Incom Corporation'
+        cost_in_credits:
+          type: string
+          example: '149999'
+        length:
+          type: string
+          example: '12.5'
+        max_atmosphering_speed:
+          type: string
+          example: '1050'
+        crew:
+          type: string
+          example: '1'
+        passengers:
+          type: string
+          example: '0'
+        cargo_capacity:
+          type: string
+          example: '110'
+        consumables:
+          type: string
+          example: '1 week'
+        hyperdrive_rating:
+          type: string
+          example: '1.0'
+        MGLT:
+          type: string
+          example: '100'
+        starship_class:
+          type: string
+          example: 'Starfighter'
+        pilots:
+          type: array
+          items:
+            type: string
+            format: uri
+          example:
+            - 'https://swapi.dev/api/people/1/'
+            - 'https://swapi.dev/api/people/9/'
+            - 'https://swapi.dev/api/people/18/'
+            - 'https://swapi.dev/api/people/19/'
+        films:
+          type: array
+          items:
+            type: string
+            format: uri
+          example:
+            - 'https://swapi.dev/api/films/1/'
+            - 'https://swapi.dev/api/films/2/'
+            - 'https://swapi.dev/api/films/3/'
+        created:
+          type: string
+          format: date-time
+          example: '2014-12-12T11:19:05.340000Z'
+        edited:
+          type: string
+          format: date-time
+          example: '2014-12-20T21:23:49.886000Z'
+        url:
+          type: string
+          format: uri
+          example: 'https://swapi.dev/api/starships/12/'
+    Vehicle:
+      type: object
+      properties:
+        name:
+          type: string
+          example: 'Sand Crawler'
+        model:
+          type: string
+          example: 'Digger Crawler'
+        manufacturer:
+          type: string
+          example: 'Corellia Mining Corporation'
+        cost_in_credits:
+          type: string
+          example: '150000'
+        length:
+          type: string
+          example: '36.8 '
+        max_atmosphering_speed:
+          type: string
+          example: '30'
+        crew:
+          type: string
+          example: '46'
+        passengers:
+          type: string
+          example: '30'
+        cargo_capacity:
+          type: string
+          example: '50000'
+        consumables:
+          type: string
+          example: '2 months'
+        vehicle_class:
+          type: string
+          example: 'wheeled'
+        pilots:
+          type: array
+          items:
+            type: string
+            format: uri
+          example: []
+        films:
+          type: array
+          items:
+            type: string
+            format: uri
+          example:
+            - 'https://swapi.dev/api/films/1/'
+            - 'https://swapi.dev/api/films/5/'
+        created:
+          type: string
+          format: date-time
+          example: '2014-12-10T15:36:25.724000Z'
+        edited:
+          type: string
+          format: date-time
+          example: '2014-12-20T21:30:21.661000Z'
+        url:
+          type: string
+          format: uri
+          example: 'https://swapi.dev/api/vehicles/4/'
+    Person:
+      type: object
+      properties:
+        name:
+          type: string
+          example: 'Luke Skywalker'
+        height:
+          type: string
+          example: '172'
+        mass:
+          type: string
+          example: '77'
+        hair_color:
+          type: string
+          example: 'blond'
+        skin_color:
+          type: string
+          example: 'fair'
+        eye_color:
+          type: string
+          example: 'blue'
+        birth_year:
+          type: string
+          example: '19BBY'
+        gender:
+          type: string
+          example: 'male'
+        homeworld:
+          type: string
+          format: uri
+          example: 'https://swapi.dev/api/planets/1/'
+        films:
+          type: array
+          items:
+            type: string
+            format: uri
+          example:
+            - 'https://swapi.dev/api/films/1/'
+            - 'https://swapi.dev/api/films/2/'
+            - 'https://swapi.dev/api/films/3/'
+            - 'https://swapi.dev/api/films/6/'
+        species:
+          type: array
+          items:
+            type: string
+            format: uri
+          example: []
+        vehicles:
+          type: array
+          items:
+            type: string
+            format: uri
+          example:
+            - 'https://swapi.dev/api/vehicles/14/'
+            - 'https://swapi.dev/api/vehicles/30/'
+        starships:
+          type: array
+          items:
+            type: string
+            format: uri
+          example:
+            - 'https://swapi.dev/api/starships/12/'
+            - 'https://swapi.dev/api/starships/22/'
+        created:
+          type: string
+          format: date-time
+          example: '2014-12-09T13:50:51.644000Z'
+        edited:
+          type: string
+          format: date-time
+          example: '2014-12-20T21:17:56.891000Z'
+        url:
+          type: string
+          format: uri
+          example: 'https://swapi.dev/api/people/1/'
+    Film:
+      type: object
+      properties:
+        title:
+          type: string
+          example: 'A New Hope'
+        episode_id:
+          type: integer
+          example: 4
+        opening_crawl:
+          type: string
+          example: "It is a period of civil war.\r\nRebel spaceships, striking\r\nfrom a hidden base, have won\r\ntheir first victory against\r\nthe evil Galactic Empire.\r\n\r\nDuring the battle, Rebel\r\nspies managed to steal secret\r\nplans to the Empire's\r\nultimate weapon, the DEATH\r\nSTAR, an armored space\r\nstation with enough power\r\nto destroy an entire planet.\r\n\r\nPursued by the Empire's\r\nsinister agents, Princess\r\nLeia races home aboard her\r\nstarship, custodian of the\r\nstolen plans that can save her\r\npeople and restore\r\nfreedom to the galaxy...."
+        director:
+          type: string
+          example: 'George Lucas'
+        producer:
+          type: string
+          example: 'Gary Kurtz, Rick McCallum'
+        release_date:
+          type: string
+          format: date
+          example: '1977-05-25'
+        characters:
+          type: array
+          items:
+            type: string
+            format: uri
+          example:
+            - 'https://swapi.dev/api/people/1/'
+            - 'https://swapi.dev/api/people/2/'
+        planets:
+          type: array
+          items:
+            type: string
+            format: uri
+          example:
+            - 'https://swapi.dev/api/planets/1/'
+            - 'https://swapi.dev/api/planets/2/'
+        starships:
+          type: array
+          items:
+            type: string
+            format: uri
+          example:
+            - 'https://swapi.dev/api/starships/2/'
+            - 'https://swapi.dev/api/starships/3/'
+        vehicles:
+          type: array
+          items:
+            type: string
+            format: uri
+          example:
+            - 'https://swapi.dev/api/vehicles/4/'
+            - 'https://swapi.dev/api/vehicles/6/'
+        species:
+          type: array
+          items:
+            type: string
+            format: uri
+          example:
+            - 'https://swapi.dev/api/species/1/'
+            - 'https://swapi.dev/api/species/2/'
+        created:
+          type: string
+          format: date-time
+          example: '2014-12-10T14:23:31.880000Z'
+        edited:
+          type: string
+          format: date-time
+          example: '2014-12-20T19:49:45.256000Z'
+        url:
+          type: string
+          format: uri
+          example: 'https://swapi.dev/api/films/1/'
+    Species:
+      type: object
+      properties:
+        name:
+          type: string
+          example: 'Human'
+        classification:
+          type: string
+          example: 'mammal'
+        designation:
+          type: string
+          example: 'sentient'
+        average_height:
+          type: string
+          example: '180'
+        skin_colors:
+          type: string
+          example: 'caucasian, black, asian, hispanic'
+        hair_colors:
+          type: string
+          example: 'blonde, brown, black, red'
+        eye_colors:
+          type: string
+          example: 'brown, blue, green, hazel, grey, amber'
+        average_lifespan:
+          type: string
+          example: '120'
+        homeworld:
+          type: string
+          format: uri
+          example: 'https://swapi.dev/api/planets/9/'
+        language:
+          type: string
+          example: 'Galactic Basic'
+        people:
+          type: array
+          items:
+            type: string
+            format: uri
+          example:
+            - 'https://swapi.dev/api/people/66/'
+            - 'https://swapi.dev/api/people/67/'
+        films:
+          type: array
+          items:
+            type: string
+            format: uri
+          example:
+            - 'https://swapi.dev/api/films/1/'
+            - 'https://swapi.dev/api/films/2/'
+        created:
+          type: string
+          format: date-time
+          example: '2014-12-10T13:52:11.567000Z'
+        edited:
+          type: string
+          format: date-time
+          example: '2014-12-20T21:36:42.136000Z'
+        url:
+          type: string
+          format: uri
+          example: 'https://swapi.dev/api/species/1/'
